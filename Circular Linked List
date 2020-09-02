@@ -1,0 +1,458 @@
+LINKED LIST DATA STRUCTURE
+
+CIRCULAR LINKED LIST:
+
+The program given below can store and modify in following manner:
+1.Create
+2. Display
+3. Insert the node at the start
+4. Insert the node before a node (before start node condition included)
+5. Insert the node after a node (after last node condition included)
+6. Insert the node at the end of the list
+7. Delete the node at the start
+8. Delete the node before a node(before start node condition and deletion of node before second note i.e. first node is included)
+9. Delete the node after a node(after last node condition and deletion of node after second last node i.e. last node is included)
+10. Delete the node at the end
+11. Delete the given node(deletion of start and end node condition is included)
+12. Delete the entire list of the nodes
+13. Search  a given node
+
+
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int data; //data of the node that needs to be stored
+    struct node*next; //address of the next node
+};
+
+struct node *create_list(struct node *start) //to create linked list
+{
+    struct node *ptr, *new_node; //declaring a new node and counter pointer
+    int num;
+    printf("Enter the number -1 to terminate the loop\n"); //-1 is the terminating condition 
+    printf("Enter the data to be stored: \n");
+    scanf("%d",&num);
+    while( num != -1)
+    {
+       new_node = (struct node *)malloc(sizeof(struct node)); //assigning memory 
+       new_node -> data = num;//allocating the data to be stored in the node
+       
+       if(start == NULL)
+       {
+           new_node -> next = new_node;
+           start = new_node;
+       }
+       else
+       {
+           ptr = start; //set ptr to start.
+           while(ptr -> next != start) 
+           {
+               ptr = ptr->next;
+           }
+           ptr -> next = new_node;
+           new_node -> next = start; //setting the new node at the end.
+       }
+       printf("enter the data to be added \n");
+       scanf("%d",&num);
+    }
+    return start;
+}
+
+struct node *display_list(struct node *start)
+{
+    struct node  *ptr;
+    ptr = start;
+    while( ptr ->next  != start)//circular linked list's end points towards start
+    {
+        printf("\t %d", ptr ->data); //printing the data stored in the nodes
+        ptr = ptr -> next;
+    }
+    printf("\t %d", ptr -> data);
+    return start;
+}
+
+struct node *insert_start(struct node *start)
+{
+    struct node *new_node, *ptr;
+    int num;
+    printf("Enter the number to be added to the linked list: \n");
+    scanf("%d",&num);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node -> data = num;
+    ptr = start;
+    while(ptr -> next != start)
+    {
+        ptr = ptr -> next;
+    }
+    ptr -> next = new_node;
+    new_node -> next = start; // connecting the new node to the beginning of the list
+    start = new_node; // setting the new node to be start
+    return start;
+}
+
+struct node *insert_before(struct node *start)
+{
+    struct node *new_node, *ptr, *preptr;
+    int num, val;
+    printf("Enter the value before which you desire to insert the new node: \n");
+    scanf("%d",&val);
+    printf("Enter the number to be added to the linked list: \n");
+    scanf("%d",&num);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node -> data = num;
+    ptr = start;
+        if(ptr ->data == val)
+    {
+       ptr = start;
+    while(ptr -> next != start)
+    {
+        ptr = ptr -> next;
+    }
+    ptr -> next = new_node;
+    new_node -> next = start; // connecting the new node to the beginning of the list
+    start = new_node; // setting the new node to be start
+    return start;
+    }
+    else
+    {
+    while(ptr -> data != val ) 
+    {
+        preptr = ptr;
+        ptr = ptr -> next;
+    }
+        preptr -> next = new_node; //connecting the prenode to the new node
+        new_node -> next = ptr; // connecting the new node to the ptr node
+        return start;
+    }
+}
+
+struct node *insert_after(struct node *start)
+{
+    struct node *ptr, *preptr, *new_node;
+    int num, val;
+    printf("Enter the value after which you desire to insert the new node: \n");
+    scanf("%d",&val);
+    printf("Enter the number to be added to the linked list: \n");
+    scanf("%d",&num);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node -> data = num; 
+    ptr = start;
+    preptr = ptr;
+    while(preptr -> data != val)
+    {
+        preptr = ptr;
+        ptr = ptr -> next;
+    }
+    if(preptr->next == start)
+    {
+        preptr -> next = new_node;
+        new_node -> next = start;
+        return start;
+    }
+    else
+    {
+        preptr -> next = new_node;
+        new_node -> next = ptr;
+    }   return start;
+}
+
+struct node *insert_end(struct node *start)
+{
+    struct node *ptr, *new_node;
+    int num;
+    printf("Enter the number to be added at the end of the linked list: \n");
+    scanf("%d",&num);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node -> data = num; 
+    ptr = start;
+    while(ptr -> next != start)
+    {
+        ptr = ptr -> next;
+    }
+    ptr -> next = new_node;
+    new_node -> next = start;
+    return start;
+}
+
+struct node *delete_start(struct node *start)
+{
+    struct node *ptr;
+    ptr = start;
+    while(ptr -> next != start)
+    {
+    ptr = ptr -> next;
+    }
+    ptr -> next = start -> next;
+    free(start);
+    start = ptr -> next;
+    return start;
+}
+
+struct node *delete_before(struct node *start)
+{
+    struct node *ptr, *preptr, *temp;
+    int val;
+    printf("Enter the value, before which the node will be deleted:\n");
+    scanf("%d",&val);
+    ptr = start;
+    if(ptr -> data == val)
+    {
+        while(ptr -> next != start)
+            {
+                preptr = ptr;
+                ptr = ptr -> next;
+            }
+        preptr -> next = ptr->next;
+        free(ptr);
+        return start;
+    }
+    else{
+            while(ptr -> data != val)
+            {
+                temp = preptr;
+                preptr = ptr;
+                ptr = ptr -> next;
+            }
+            if(temp == start)
+            {
+                while(preptr -> next != start)
+                {
+                    preptr = ptr;
+                    ptr = ptr -> next;
+                }
+                preptr -> next = start -> next;
+                free(ptr);
+                start = preptr -> next;
+                return start;
+            }
+            else
+            {
+                temp -> next = ptr;
+                free(preptr); 
+                return start;
+            }
+    }
+}
+
+struct node *delete_after(struct node *start)
+{
+  struct node *ptr,*preptr;
+  int num;
+  printf("Enter node data after which element is to be deleted: \n");
+  scanf("%d",&num);
+   ptr=start;
+   preptr=ptr;
+   while(preptr->data!=num)
+   {
+        preptr=ptr;
+        ptr=ptr->next;
+   }
+   if(preptr -> next == start)
+   {
+        ptr -> next = start -> next;
+        free(start);
+        start = ptr -> next;
+        preptr -> next = start;
+        return start; 
+   }
+   else if(preptr == start)
+   {
+        if(ptr == start)
+        {
+            start = delete_start(ptr);
+            return start;
+        }
+        else
+        {
+            preptr -> next = ptr->next;
+            free(ptr);
+            return start;
+        }   
+   }
+   else
+   {
+       preptr -> next=ptr -> next;
+       free(ptr);
+       return start;
+   }
+}
+
+struct node *delete_end(struct node *start)
+{
+    struct node *ptr, *preptr;
+    ptr = start;
+    while(ptr-> next != start)
+    {
+        preptr = ptr;
+        ptr = ptr -> next;
+    }
+    if(ptr == start)
+    {
+        start = delete_start(ptr);
+        return start;
+    }
+    else
+    {
+        preptr -> next = ptr->next;
+        free(ptr);
+        return start;
+    }   
+}
+
+struct node *delete_node(struct node *start)
+{
+    struct node *ptr, *preptr;
+    int val;
+    printf("enter the value that has to be deleted: \n");
+    scanf("%d",&val);
+    ptr = start;
+    preptr = start;
+    if(ptr -> data == val)
+    {
+        start = delete_start(start);
+        return start;
+    }
+    else
+    {
+        while(ptr -> data != val)
+        {
+            preptr = ptr;
+            ptr = ptr -> next;
+        }
+        if(ptr -> next == start)
+        {
+             start = delete_end(start);
+        }
+        else
+        {
+        preptr -> next = ptr -> next;
+        free(ptr);
+        return start;
+        }
+    }
+}
+
+struct node *delete_list(struct node *start)
+{
+    struct node *ptr;
+    ptr = start;
+    while(ptr -> next != start)
+    {
+        start = delete_end(start);
+    }
+    free(start);
+    return start;
+}
+
+struct node *search_element(struct node *start)
+{
+     struct node *ptr, *pos;
+     int value;
+     ptr=start;
+     printf("Enter element to be searched \n");
+     scanf("%d",&value);
+     while(ptr->data!=value)
+     {
+        ptr=ptr->next;
+     }
+        pos=ptr;
+        return(pos);
+}
+
+struct node *start = NULL;
+
+int main()
+{
+    int option;
+    printf("-----------------CIRCULAR LINKED LIST-----------------\n");
+    do{
+        printf("Select the option you want to perform:\n");
+        printf("1. Create\n");
+        printf("2. Display \n");
+        printf("3. Insert the node at the start\n");
+        printf("4. Insert the node before a node\n");
+        printf("5. Insert the node after a node\n");
+        printf("6. Insert the node at the end of the list\n");
+        printf("7. Delete the node at the start\n");
+        printf("8. Delete the node before a node\n");
+        printf("9. Delete the node after a node\n");
+        printf("10. Delete the node at the end\n");
+        printf("11. Delete the given node\n");
+        printf("12. Delete the entire list of the nodes\n");
+        printf("13. Search  a given node\n");
+        printf("14. Exit\n");
+        printf("Enter the option of the operation you wish to perform: \n");
+        scanf("%d",&option);
+        switch(option)
+        {
+            case 1:
+            start  = create_list(start);
+            printf("List has been created\n");
+            break;
+            
+            case 2:
+            start = display_list(start);
+            printf("\n");
+            break;
+            
+            case 3:
+            start = insert_start(start);
+            break;
+            
+            case 4:
+            start = insert_before(start);
+            break;
+            
+            case 5:
+            start = insert_after(start);
+            break;
+            
+            case 6:
+            start = insert_end(start);
+            break;
+            
+            case 7:
+            start = delete_start(start);
+            break;
+            
+            case 8:
+            start = delete_before(start);
+            break;
+            
+            case 9:
+            start = delete_after(start);
+            break;
+            
+            case 10: 
+            start = delete_end(start);
+            break;
+            
+            case 11:
+            start = delete_node(start);
+            break;
+            
+            case 12:
+            start = delete_list(start);
+            break;
+            
+            case 13:
+            start = search_element(start);
+            printf("Element searched is %d\n",start->data);
+            break;
+
+            
+            case 14:
+            printf("The program is getting terminated");
+            exit(0);
+            break;
+            
+            default:
+            printf("Wrong option entered");
+        }
+    }while(option != 14);
+    getch();
+    return 0;
+}
