@@ -1,6 +1,6 @@
 Queue Data structure
 
-Implementation of Queue:
+Implementation of Queue using array:
 
 #include<stdio.h>
 #include<conio.h>
