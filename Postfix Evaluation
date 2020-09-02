@@ -1,0 +1,78 @@
+Stack Data Structure using Array
+
+Application of stack data structure:
+Postfix expression evaluation
+
+#include<stdio.h>
+#include<ctype.h>
+#include <stdlib.h>
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+void push(int value)
+{
+    top++;
+    stack[top]=value;
+}
+
+int pop()
+{
+    int m;
+    m = stack[top];
+    top--;
+    return m;
+}
+
+int main()
+{
+    char postfix[MAX], temp;
+    int num1, num2, result,n;
+    int i = 0;
+    printf("enter the postfix expression");
+    gets(postfix);
+    while(postfix[i] != '\0')
+    {
+        temp = postfix[i];
+        if(isdigit(postfix[i])) //the statement only accepts numbers //
+        {
+            temp = postfix[i] - '0';
+            push(temp);
+        }
+        else
+        {
+            num2=pop();
+            num1=pop();
+            switch(temp)
+            {
+                case '+':
+                result = num1 + num2;
+                break;
+                
+                case '-':
+                result = num1 - num2;
+                break;
+                
+                case '*':
+                result = num1 * num2;
+                break;
+                
+                case'/':
+                result = num1 / num2;
+                break;
+                
+                default:
+                printf("Wrong operator");
+                return 0;
+                
+            }
+            push(result);
+        }
+        i++;
+    }
+   result = pop();
+    printf("the result is %d",result);
+    return 0;
+}
+
