@@ -1,5 +1,5 @@
 The data structure part 1:
-STACK
+STACK using array
  
 #include <stdio.h> 
 #include <stdlib.h> 
