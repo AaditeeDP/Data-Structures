@@ -1,0 +1,124 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#define MAX 25
+
+struct stack
+{
+    int data; //data of the node that needs to be stored
+    struct node*next; //address of the next node
+};
+
+struct stack *top = NULL;//top declared
+
+struct stack *push(struct stack *top)
+{
+     int num;
+     printf("Enter the number to be added in the stack:\n");
+     scanf("%d",&num);
+    struct stack *new_element;
+    new_element = (struct stack*)malloc(sizeof(struct stack));//new node made 
+    new_element -> data = num;
+    if(top == NULL)
+    {
+        new_element -> next = NULL;//first element
+        top = new_element;//assigning the element to be one the top of the stack
+    }
+    else
+    {
+        new_element -> next = top;//putting the new element on the top of the existing element
+        top = new_element;//new element on the top
+    }
+    return top;
+    
+}
+
+struct stack *pop(struct stack *top)
+{
+    struct stack *node;
+    node = top;
+    if(top == NULL)//if top = null,then the stack is empty
+    {
+        printf("Stack underflow condition: please enter elements by pressing 1\n");
+    }
+    else
+    {
+        node = top;//assigning the value of top to the pointer variable node
+        top = top -> next;//reassigning the value of the top
+        printf("The number at the top that is %d has been deleted",node->data);
+        free(node);
+    }
+    return top;
+}
+
+struct stack *peek(struct stack *top)
+{
+    if(top == NULL)
+    {
+        return -1;//empty stack cannot be peeked into :)
+    }
+    else
+    {
+      printf("%d \n",top->data);
+    }
+}
+
+struct stack *display(struct stack *top)
+{
+    struct stack *node;
+    node = top;
+    if(top == NULL)
+    {
+        printf("stack is empty, nothing to display\n");
+    }
+    else
+    {
+        while(node != NULL)//unless node is node, it holds data
+        {
+            printf("The elements in the stack are: \n");
+            printf("%d \n",node->data);
+            node = node->next;
+            
+        }
+    }
+    return top;
+}
+
+int main()  
+    { 
+        int val, option;
+         printf("______________________________________________________________\n");
+        do 
+        { 
+            printf("_____________________________menu_____________________________\n"); 
+            printf("case 1-push \n"); 
+            printf("case 2-pop \n"); 
+            printf("case 3-peek \n"); 
+            printf("case 4-display \n"); 
+            printf("case 5-exit \n"); 
+            printf("Enter the operation you want to perform: \n"); 
+            scanf("%d", &option); 
+        
+            switch(option) 
+            { 
+                case 1: 
+                top  = push(top);
+                break; 
+                
+                case 2: 
+                top = pop(top);
+                break; 
+                
+                case 3: 
+                top = peek(top);
+                break; 
+                
+                case 4: 
+                top = display(top); 
+                break; 
+            } 
+            
+        }while(option != 5); 
+            return 0; 
+} 
+
+
